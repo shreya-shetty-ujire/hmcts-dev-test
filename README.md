@@ -4,6 +4,9 @@
 
 This application allows users to create, view, update, and delete tasks. It includes the following properties for each task:
 
+![image](https://github.com/user-attachments/assets/8c2622b2-a1b3-48eb-82a9-1d49869de0d1)
+
+
 - **Title**
 - **Description** (optional)
 - **Status** (e.g., "To Do", "In Progress", "Completed")
