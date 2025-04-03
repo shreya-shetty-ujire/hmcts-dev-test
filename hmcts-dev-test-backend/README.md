@@ -1,10 +1,138 @@
-# HMCTS Dev Test Backend
-This will be the backend for the brand new HMCTS case management system. As a potential candidate we are leaving
-this in your hands. Please refer to the brief for the complete list of tasks! Complete as much as you can and be
-as creative as you want.
+# HMCTS Dev Test - Backend
 
-You should be able to run `./gradlew build` to start with to ensure it builds successfully. Then from that you
-can run the service in IntelliJ (or your IDE of choice) or however you normally would.
+This repository contains the backend service for the HMCTS Dev Test. The service is built using Spring Boot and provides basic REST APIs for managing tasks.
 
-There is an example endpoint provided to retrieve an example of a case. You are free to add/remove fields as you
-wish.
+## Features
+
+- **Task Management:**
+  - Create a new task
+  - Retrieve all tasks
+  - Retrieve a task by its ID
+  - Update task status
+  - Delete a task
+
+- **Database Integration:**
+  - PostgreSQL database integration to store task details.
+
+    The database connection is configured in the `application.yaml` file. For local development, you only need to specify the database URL, username, and password.
+    
+    **Location of `application.yaml`:**  
+    `src/main/resources/application.yaml`
+    
+    **Add/Edit the following configuration:**
+    
+    ```yaml
+    spring:
+      datasource:
+        url:                                           # Database URL
+        username:                                      # Database username
+        password:                                      # Database password
+        driver-class-name: org.postgresql.Driver       # Database driver
+    ```
+
+## API Endpoints
+
+### `POST /tasks/create`
+Creates a new task.
+
+#### Request Body:
+```json
+{
+    "title": "Task Title",
+    "description": "Task description",
+    "status": "open",
+    "due": "2025-04-05"
+}
+```
+#### Response:
+- **Status:** `201 Created`
+- **Body:**
+```json
+{
+    "id": 1,
+    "title": "Task Title",
+    "description": "Task description",
+    "status": "open",
+    "due": "2025-04-05"
+}
+```
+
+### `GET /tasks/getAll`
+Fetches all tasks.
+
+#### Response:
+- **Status:** `200 OK`
+- **Body:**
+```json
+[
+    {
+        "id": 1,
+        "title": "Task Title",
+        "description": "Task description",
+        "status": "open",
+        "due": "2025-04-05"
+    },
+    {
+        "id": 2,
+        "title": "Another Task",
+        "description": "Another description",
+        "status": "completed",
+        "due": "2025-05-01"
+    }
+]
+```
+
+### `GET /tasks/getById/{id}`
+Fetches a task by its ID.
+
+#### Response:
+- **Status:** `200 OK`
+- **Body:**
+```json
+{
+    "id": 1,
+    "title": "Task Title",
+    "description": "Task description",
+    "status": "open",
+    "due": "2025-04-05"
+}
+```
+
+### `DELETE /tasks/delete/{id}`
+Deletes a task by its ID.
+
+#### Response:
+- **Status:** `200 OK`
+- **Body:**
+```json
+{
+    "message": "Task with id 1 deleted successfully"
+}
+```
+
+### `PUT /tasks/{id}/status`
+Updates the status of a task by ID.
+
+#### Query Parameter:
+- `status` (required): The new status for the task (e.g., "completed", "open").
+
+#### Request Example:
+```bash
+PUT /tasks/1/status?status=completed
+```
+
+#### Response:
+- **Status:** `200 OK`
+- **Body:**
+```json
+{
+    "id": 1,
+    "title": "Task Title",
+    "description": "Task description",
+    "status": "completed",
+    "due": "2025-04-05"
+}
+```
+
+
+
