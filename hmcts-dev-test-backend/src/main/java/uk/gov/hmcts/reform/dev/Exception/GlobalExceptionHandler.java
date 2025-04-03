@@ -30,6 +30,12 @@ public class GlobalExceptionHandler {
         ErrorDetails error = new ErrorDetails(ex.getMessage(), request.getDescription(false), LocalDateTime.now());
         return new ResponseEntity <>(error, HttpStatus.BAD_REQUEST);
     }
+    
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity <ErrorDetails> handleTaskNotFoundException(TaskNotFoundException ex, WebRequest request) {
+        ErrorDetails error = new ErrorDetails(ex.getMessage(), request.getDescription(false), LocalDateTime.now());
+        return new ResponseEntity <>(error, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGeneralException(Exception ex, WebRequest request) {
@@ -39,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorDetails> handleValidationException(ConstraintViolationException ex, WebRequest request) {
         logger.error("Validation error: " + ex.getMessage());
-        // Customize the error message
+        
         ErrorDetails error = new ErrorDetails(ex.getMessage(),request.getDescription(false),
                                               LocalDateTime.now());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
@@ -48,22 +54,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
         logger.error("Validation error: " + ex.getMessage());
 
-        // Extracting the field name and default error message (like "Must be a date in the present or in the future")
         String errorMessage = "Validation error";
 
         for ( FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
             if ("due".equals(fieldError.getField())) {
-                errorMessage = "Due date must be today or in the future."; // Customize this for the 'due' field
-            }
+                errorMessage = "Due date must be today or in the future.";
+            }else if ("title".equals(fieldError.getField())) {
+                errorMessage = "Title cannot be null or empty"; 
         }
 
-        // Send the cleaner error message to the frontend
         ErrorDetails error = new ErrorDetails(errorMessage, request.getDescription(false), LocalDateTime.now());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ErrorDetails> handleInvalidDateFormat(InvalidFormatException ex, WebRequest request) {
-        // Customize the error message
         ErrorDetails error = new ErrorDetails(ex.getMessage(),request.getDescription(false),
                                               LocalDateTime.now());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

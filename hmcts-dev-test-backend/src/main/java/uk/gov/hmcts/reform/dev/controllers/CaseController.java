@@ -45,7 +45,7 @@ public class CaseController {
     @GetMapping("getById/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         Task task = taskService.getTaskById(id)
-            .orElseThrow(()->new TaskException("Task with id "+ id + " not found"));
+            .orElseThrow(()->new TaskNotFoundException("Task with id "+ id + " not found"));
 
         return new ResponseEntity <>(task,HttpStatus.OK);
     }
