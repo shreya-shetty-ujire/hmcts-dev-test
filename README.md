@@ -4,7 +4,7 @@
 
 This application allows users to create, view, update, and delete tasks. It includes the following properties for each task:
 
-<img src="https://github.com/user-attachments/assets/8c2622b2-a1b3-48eb-82a9-1d49869de0d1" alt="page" width="300" height="auto" />
+<img src="https://github.com/user-attachments/assets/8c2622b2-a1b3-48eb-82a9-1d49869de0d1" alt="page" width="600" height="auto" />
 
 
 - **Title**
